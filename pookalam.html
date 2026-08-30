@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Onam</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #FFF3D6;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+  h1 {
+    color: #8B0000;
+    margin-bottom: 20px;
+    font-size: 32px;
+  }
+  .pookalam {
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    position: relative;
+    background: #fff;
+    box-shadow: 0 0 0 12px #7a3e00, 0 15px 40px rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+  .layer {
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .l1 { width: 100%; height: 100%; background: #C1121F; }
+  .l2 { width: 88%; height: 88%; background: #FDF0D5; border: 4px dashed #C1121F; }
+  .l3 { width: 75%; height: 75%; background: #FFB703; }
+  .l4 { width: 62%; height: 62%; background: #219EBC; }
+  .l5 { width: 48%; height: 48%; background: #FB8500; }
+  .l6 { width: 34%; height: 34%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 42px; border: 3px solid #FFB703; }
+  
+  .petals {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+  }
+  .petals i {
+    position: absolute;
+    width: 26px;
+    height: 54px;
+    background: white;
+    left: 50%;
+    top: 2%;
+    border-radius: 100% 100% 0 0;
+    transform-origin: 50% 205px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🌼 Happy Onam 🌼</h1>
+
+<div class="pookalam">
+  <div class="layer l1"></div>
+  <div class="layer l2"></div>
+  <div class="layer l3"></div>
+  <div class="layer l4"></div>
+  <div class="layer l5"></div>
+  <div class="layer l6">🌺</div>
+  <div class="petals" id="petals"></div>
+</div>
+
+<script>
+  const box = document.getElementById('petals');
+  const colors = ['#ffffff', '#ffbe0b', '#fb5607'];
+  for (let i = 0; i < 24; i++) {
+    let p = document.createElement('i');
+    p.style.transform = `translateX(-50%) rotate(${i * 15}deg)`;
+    p.style.background = colors[i % 3];
+    box.appendChild(p);
+  }
+</script>
+
+</body>
+</html>
