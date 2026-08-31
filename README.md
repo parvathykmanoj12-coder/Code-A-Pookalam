@@ -45,7 +45,7 @@ You only need:
 
 ### Running the Code
 
-Open `pookalam.html` in your browser.
+Open `index.html` in your browser.
 
 ## 📁 File Structure
 ```
