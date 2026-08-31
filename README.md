@@ -15,7 +15,7 @@ Maavora 🌸
 Maavora is a digital Pookalam created using HTML, CSS, and JavaScript, inspired by the vibrant colors and traditional floral patterns of Kerala’s Onam celebrations. The design combines traditional Pookalam elements with a modern interactive web experience, showcasing how technology can be used to preserve and creatively represent Kerala’s cultural heritage.
 
 ### Preview
-![My Pookalam]()
+![My Pookalam](IMG_20260830_220308.jpg)
 *Add more images if you have multiple views or animations*
 
 ### Features
