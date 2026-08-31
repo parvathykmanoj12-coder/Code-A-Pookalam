@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maavora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep: #1a0906;
+    --bg-mid: #331206;
+    --gold: #ffd166;
+    --gold-soft: #ffe9b8;
+  }
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0; padding:0; min-height:100vh;
+    background:
+      radial-gradient(ellipse at 50% -10%, #4a1f10 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 110%, #3a1206 0%, transparent 55%),
+      linear-gradient(180deg, var(--bg-deep), var(--bg-mid) 55%, var(--bg-deep));
+    overflow-x:hidden;
+    font-family:'Poppins', sans-serif;
+    color: var(--gold-soft);
+  }
+
+  .stars{ position:fixed; inset:0; pointer-events:none; z-index:0; }
+  .stars span{
+    position:absolute; width:2px; height:2px; background:#ffe9b8;
+    border-radius:50%; opacity:.5; animation: twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle{ 0%,100%{opacity:.15} 50%{opacity:.9} }
+
+  .petal-fall{
+    position:fixed; top:-40px; z-index:0; pointer-events:none;
+    font-size:18px; opacity:.85;
+    animation-name: fall, sway;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards, none;
+  }
+  @keyframes fall{ to{ transform: translateY(105vh) rotate(360deg);} }
+  @keyframes sway{ 0%,100%{ margin-left:0; } 50%{ margin-left:40px; } }
+
+  main{
+    position:relative; z-index:1;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding: 36px 16px 60px; text-align:center;
+  }
+
+  .title-row{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom: 22px; }
+
+  .lamp{ width:34px; height:56px; flex:none; opacity:.9; }
+  .lamp.right{ transform: scaleX(-1); }
+  .lamp .flame{ animation: flicker 1.6s ease-in-out infinite; transform-origin: 50% 100%; }
+  @keyframes flicker{
+    0%,100%{ transform: scale(1) translateY(0); opacity:1; }
+    45%{ transform: scale(1.08,0.94) translateY(-0.5px); opacity:.85; }
+    70%{ transform: scale(0.95,1.06) translateY(0.5px); opacity:1; }
+  }
+
+  h1{
+    font-family:'Baloo Bhai 2', cursive;
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    margin: 0;
+    background: linear-gradient(90deg, #ffd166, #ff8c1a, #ffd166);
+    -webkit-background-clip: text; background-clip:text; color:transparent;
+    text-shadow: 0 0 40px rgba(255,209,102,.25);
+  }
+
+  .stage{
+    position:relative; width:min(90vw, 660px);
+    filter: drop-shadow(0 0 45px rgba(255, 140, 26, .2));
+  }
+  .stage::before{
+    content:""; position:absolute; inset:-6%; border-radius:50%;
+    background: radial-gradient(circle, rgba(255,209,102,.18), transparent 70%);
+    z-index:0; animation: pulseGlow 4s ease-in-out infinite;
+  }
+  .stage::after{
+    content:""; position:absolute; left:50%; bottom:-4%; width:70%; height:8%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse, rgba(0,0,0,.55), transparent 70%);
+    z-index:0; filter: blur(6px);
+  }
+  @keyframes pulseGlow{ 0%,100%{opacity:.6; transform:scale(1);} 50%{opacity:1; transform:scale(1.05);} }
+
+  svg{ position:relative; z-index:1; width:100%; height:auto; display:block; }
+
+  .ring-spin{ transform-origin: 0px 0px; animation-play-state: paused; }
+  .cw  { animation: spinCW  var(--dur,40s) linear infinite; }
+  .ccw { animation: spinCCW var(--dur,40s) linear infinite; }
+  @keyframes spinCW  { to{ transform: rotate(360deg); } }
+  @keyframes spinCCW { to{ transform: rotate(-360deg); } }
+  .stage.spinning .ring-spin{ animation-play-state: running; }
+
+  .petal-bloom{
+    transform-origin: 0px 0px; transform: scale(0); opacity:0;
+    animation: bloom .9s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  @keyframes bloom{
+    0%{ transform: scale(0) rotate(-20deg); opacity:0; }
+    65%{ transform: scale(1.1) rotate(1deg); opacity:1; }
+    100%{ transform: scale(1) rotate(0deg); opacity:1; }
+  }
+
+  .center-glow{ animation: haloPulse 2.6s ease-in-out infinite; transform-origin:0 0; }
+  @keyframes haloPulse{ 0%,100%{ opacity:.55; transform:scale(1);} 50%{ opacity:1; transform:scale(1.12);} }
+
+  .center-core{ animation: coreFlicker 2.4s ease-in-out infinite; transform-origin: 0 0; }
+  @keyframes coreFlicker{ 0%,100%{ opacity:1; } 50%{ opacity:.85; } }
+
+  .core-flash{ animation: flash 1.1s ease-out; transform-origin:0 0; }
+  @keyframes flash{
+    0%{ filter:brightness(1); }
+    30%{ filter:brightness(2.1); }
+    100%{ filter:brightness(1); }
+  }
+
+  .cta-wrap{ margin-top: 36px; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .cta{
+    display:flex; align-items:center; gap:10px;
+    padding: 13px 26px; border-radius: 999px; cursor:pointer;
+    background: linear-gradient(180deg, #ff9a3c, #c1272d);
+    border: 1px solid #ffd16688;
+    color:#fff6de; font-family:'Poppins',sans-serif; font-weight:600; font-size:.95rem;
+    letter-spacing:.03em;
+    box-shadow: 0 6px 22px rgba(193,39,45,.4), inset 0 1px 0 rgba(255,255,255,.25);
+    transition: transform .25s ease, box-shadow .25s ease;
+    user-select:none;
+    animation: ctaBreathe 3s ease-in-out infinite;
+  }
+  @keyframes ctaBreathe{
+    0%,100%{ box-shadow: 0 6px 22px rgba(193,39,45,.4), inset 0 1px 0 rgba(255,255,255,.25); }
+    50%{ box-shadow: 0 8px 30px rgba(255,154,60,.55), inset 0 1px 0 rgba(255,255,255,.3); }
+  }
+  .cta:hover{ transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,140,26,.5), inset 0 1px 0 rgba(255,255,255,.3); animation-play-state: paused; }
+  .cta:active{ transform: translateY(0) scale(.97); }
+  .cta .icon{ font-size:1.1rem; animation: iconSpin 3s linear infinite; }
+  @keyframes iconSpin{ to{ transform: rotate(360deg); } }
+  .hint{ font-size:.7rem; opacity:.55; letter-spacing:.04em; }
+
+  @media (prefers-reduced-motion: reduce){
+    .petal-bloom{ animation-duration: .01s; }
+    .ring-spin{ animation: none !important; }
+    .petal-fall, .stars span, .center-core, .center-glow, .stage::before, .lamp .flame, .cta .icon{ animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div id="petalField"></div>
+
+<main>
+  <div class="title-row">
+    <svg class="lamp" viewBox="0 0 40 64"><g class="flame"><path d="M20 6 C 14 16, 14 24, 20 28 C 26 24, 26 16, 20 6 Z" fill="#ff9a3c"/><path d="M20 12 C 17 18, 17 22, 20 25 C 23 22, 23 18, 20 12 Z" fill="#ffe28a"/></g>
+      <path d="M12 30 L28 30 L24 40 L16 40 Z" fill="#d98f1f"/>
+      <rect x="18.5" y="40" width="3" height="14" fill="#b5721a"/>
+      <path d="M8 54 L32 54 L27 62 L13 62 Z" fill="#d98f1f"/>
+    </svg>
+    <h1>Maavora</h1>
+    <svg class="lamp right" viewBox="0 0 40 64"><g class="flame"><path d="M20 6 C 14 16, 14 24, 20 28 C 26 24, 26 16, 20 6 Z" fill="#ff9a3c"/><path d="M20 12 C 17 18, 17 22, 20 25 C 23 22, 23 18, 20 12 Z" fill="#ffe28a"/></g>
+      <path d="M12 30 L28 30 L24 40 L16 40 Z" fill="#d98f1f"/>
+      <rect x="18.5" y="40" width="3" height="14" fill="#b5721a"/>
+      <path d="M8 54 L32 54 L27 62 L13 62 Z" fill="#d98f1f"/>
+    </svg>
+  </div>
+
+  <div class="stage" id="stage">
+    <svg id="pookalamSvg" viewBox="0 0 840 840" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+
+  <div class="cta-wrap">
+    <div class="cta" id="bloomBtn"><span class="icon">🌼</span><span>Bloom Maavora</span></div>
+    <div class="hint">tap to bloom &amp; set it spinning</div>
+  </div>
+</main>
+
+<script>
+const svgNS = "http://www.w3.org/2000/svg";
+const svg = document.getElementById('pookalamSvg');
+const CX = 420, CY = 420;
+
+function el(tag, attrs){
+  const e = document.createElementNS(svgNS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+// ---------- petal shape library (kept distinct per ring on purpose) ----------
+function vesicaPetal(innerR, outerR, width){ // narrow pointed teardrop
+  const midR = innerR + (outerR - innerR) * 0.35;
+  const tipEase = outerR - (outerR - innerR) * 0.12;
+  return `M0,${-innerR} C ${width},${-midR} ${width*0.55},${-tipEase} 0,${-outerR} `+
+         `C ${-width*0.55},${-tipEase} ${-width},${-midR} 0,${-innerR} Z`;
+}
+function roundPetal(innerR, outerR, width){ // chunky rounded marigold-style petal
+  const midR = innerR + (outerR - innerR) * 0.55;
+  return `M0,${-innerR} Q ${width*1.15},${-midR*0.95} 0,${-outerR} Q ${-width*1.15},${-midR*0.95} 0,${-innerR} Z`;
+}
+function starPetal(innerR, outerR, width){ // sharp narrow star/jasmine petal
+  const midR = innerR + (outerR - innerR) * 0.62;
+  return `M0,${-innerR} L ${width},${-midR} L 0,${-outerR} L ${-width},${-midR} Z`;
+}
+function leafPath(innerR, outerR, width){
+  const midR = innerR + (outerR - innerR) * 0.5;
+  return `M0,${-innerR} Q ${width},${-midR} 0,${-outerR} Q ${-width},${-midR} 0,${-innerR} Z`;
+}
+function trianglePath(innerR, outerR, width){
+  return `M0,${-innerR} L ${width},${-outerR} L ${-width},${-outerR} Z`;
+}
+function wedgePath(r1, r2, a1, a2){
+  const rad = d => d * Math.PI / 180;
+  const x1=r1*Math.sin(rad(a1)), y1=-r1*Math.cos(rad(a1));
+  const x2=r2*Math.sin(rad(a1)), y2=-r2*Math.cos(rad(a1));
+  const x3=r2*Math.sin(rad(a2)), y3=-r2*Math.cos(rad(a2));
+  const x4=r1*Math.sin(rad(a2)), y4=-r1*Math.cos(rad(a2));
+  const largeArc = (a2-a1) > 180 ? 1 : 0;
+  return `M${x1},${y1} L${x2},${y2} A${r2},${r2} 0 ${largeArc} 1 ${x3},${y3} `+
+         `L${x4},${y4} A${r1},${r1} 0 ${largeArc} 0 ${x1},${y1} Z`;
+}
+
+const defs = el('defs', {});
+svg.appendChild(defs);
+
+function makeGrad(id, r1, r2, c1, c2){
+  const g = el('linearGradient', {id, gradientUnits:'userSpaceOnUse', x1:0, y1:-r1, x2:0, y2:-r2});
+  g.appendChild(el('stop', {offset:'0%', 'stop-color': c1}));
+  g.appendChild(el('stop', {offset:'100%', 'stop-color': c2}));
+  defs.appendChild(g);
+  return `url(#${id})`;
+}
+function makeRadial(id, c1, c2){
+  const g = el('radialGradient', {id});
+  g.appendChild(el('stop', {offset:'0%', 'stop-color': c1}));
+  g.appendChild(el('stop', {offset:'100%', 'stop-color': c2, 'stop-opacity':0}));
+  defs.appendChild(g);
+  return `url(#${id})`;
+}
+
+const root = el('g', {transform:`translate(${CX},${CY})`});
+svg.appendChild(root);
+
+const shadow = el('filter', {id:'petalShadow', x:'-60%', y:'-60%', width:'220%', height:'220%'});
+shadow.innerHTML = '<feDropShadow dx="0" dy="1.4" stdDeviation="2" flood-color="#1a0a10" flood-opacity="0.35"/>';
+defs.appendChild(shadow);
+
+const blur = el('filter', {id:'softBlur', x:'-100%', y:'-100%', width:'300%', height:'300%'});
+blur.innerHTML = '<feGaussianBlur stdDeviation="10"/>';
+defs.appendChild(blur);
+
+const shadowLayer = el('g', {filter:'url(#petalShadow)'});
+root.appendChild(shadowLayer);
+
+let delay = 0;
+
+// ---------- generic petal / leaf / triangle ring, with optional filler clusters ----------
+function buildRing(cfg){
+  const { innerR, outerR, count, width, fills, cw, dur, pathFn, step, offset, stroke, strokeWidth,
+          filler } = cfg;
+  const spin = el('g', {class:`ring-spin ${cw ? 'cw':'ccw'}`, style:`--dur:${dur}s`});
+  for(let i=0;i<count;i++){
+    const angle = (360/count)*i + (offset||0);
+    placePetal(spin, angle, pathFn, innerR, outerR, width,
+      Array.isArray(fills) ? fills[i % fills.length] : fills, stroke, strokeWidth);
+    if(filler){
+      const fAngle = angle + (360/count)/2;
+      placePetal(spin, fAngle, filler.pathFn||pathFn, filler.innerR, filler.outerR, filler.width,
+        Array.isArray(filler.fills) ? filler.fills[i % filler.fills.length] : filler.fills);
+    }
+  }
+  shadowLayer.appendChild(spin);
+  return spin;
+}
+function placePetal(spin, angle, pathFn, innerR, outerR, width, fill, stroke, strokeWidth){
+  const slot = el('g', {transform:`rotate(${angle})`});
+  const bloom = el('g', {class:'petal-bloom', 'data-delay': delay.toFixed(3), style:`animation-delay:${delay}s`});
+  delay += 0.01;
+  const path = el('path', {d: pathFn(innerR, outerR, width), fill, stroke: stroke||'none', 'stroke-width': strokeWidth||0});
+  bloom.appendChild(path);
+  slot.appendChild(bloom);
+  spin.appendChild(slot);
+}
+
+// ---------- checkerboard diamond band (the geometric ring) ----------
+function buildCheckerBand(cfg){
+  const { innerR, outerR, angDiv, radBands, palette, cw, dur, step } = cfg;
+  const spin = el('g', {class:`ring-spin ${cw?'cw':'ccw'}`, style:`--dur:${dur}s`});
+  const bw = (outerR - innerR) / radBands;
+  for(let j=0;j<radBands;j++){
+    const r1 = innerR + j*bw, r2 = r1 + bw;
+    for(let i=0;i<angDiv;i++){
+      const a1 = (360/angDiv)*i, a2 = (360/angDiv)*(i+1);
+      const color = palette[(i + j) % palette.length];
+      const bloom = el('g', {class:'petal-bloom', 'data-delay': delay.toFixed(3), style:`animation-delay:${delay}s`});
+      delay += step;
+      bloom.appendChild(el('path', {d: wedgePath(r1,r2,a1,a2), fill: color}));
+      spin.appendChild(bloom);
+    }
+  }
+  shadowLayer.appendChild(spin);
+}
+
+// ---------- a ring made entirely of little flowers, with optional filler clusters between them ----------
+function buildFlowerRing(cfg){
+  const { radius, count, petals, petalLen, petalNear, petalWidth, colors, centerColor,
+          cw, dur, step, rot, shapeFn, filler } = cfg;
+  const spin = el('g', {class:`ring-spin ${cw?'cw':'ccw'}`, style:`--dur:${dur}s`});
+  for(let i=0;i<count;i++){
+    const angle = (360/count)*i;
+    placeFlower(spin, angle, radius, petals, petalLen, petalNear, petalWidth,
+      Array.isArray(colors) ? colors[i % colors.length] : colors, centerColor, shapeFn||vesicaPetal, rot||0);
+    if(filler){
+      const fAngle = angle + (360/count)/2;
+      const fColor = Array.isArray(filler.colors) ? filler.colors[i % filler.colors.length] : filler.colors;
+      placeFlower(spin, fAngle, filler.radius, filler.petals, filler.petalLen, filler.petalNear||1.5,
+        filler.petalWidth, fColor, filler.centerColor, filler.shapeFn||starPetal, filler.rot||0);
+    }
+  }
+  shadowLayer.appendChild(spin);
+}
+function placeFlower(spin, angle, radius, petals, petalLen, petalNear, petalWidth, color, centerColor, shapeFn, rot){
+  const slot = el('g', {transform:`rotate(${angle})`});
+  const bloom = el('g', {class:'petal-bloom', 'data-delay': delay.toFixed(3), style:`animation-delay:${delay}s`});
+  delay += 0.012;
+  const flower = el('g', {transform:`translate(0,${-radius})`});
+  for(let k=0;k<petals;k++){
+    const pAngle = (360/petals)*k + rot;
+    const petal = el('g', {transform:`rotate(${pAngle})`});
+    petal.appendChild(el('path', {d: shapeFn(petalNear||2, petalLen, petalWidth), fill: color}));
+    flower.appendChild(petal);
+  }
+  flower.appendChild(el('circle', {r: petalWidth*0.45, fill: centerColor}));
+  bloom.appendChild(flower);
+  slot.appendChild(bloom);
+  spin.appendChild(slot);
+}
+
+// ================= build the pookalam =================
+// Colour hierarchy: centre cream -> yellow -> red | middle orange -> red -> yellow | outer green -> yellow -> orange/red
+
+const gLeafIn  = makeGrad('gLeafIn', 236, 250, '#2c0a10', '#5c1018');
+const gLeafOut = makeGrad('gLeafOut', 318, 356, '#0e4d21', '#5cc16d');
+const warmA = '#ff8c1a', warmB = '#c1272d', warmC = '#ffd166', warmD = '#fff3d6';
+
+// dimensional gradients (base near centre -> brighter tip) for the main flower rings
+const gTinyPetal   = makeGrad('gTinyPetal', 44, 66, '#ffcf4d', '#fff8e4');
+const gRosette     = makeGrad('gRosette', 70, 118, '#7a0c1f', '#ff5a3c');
+const gRosetteOrg  = makeGrad('gRosetteOrg', 70, 118, '#b5470c', '#ffb15c');
+const gDaisy       = makeGrad('gDaisy', 124, 144, '#e07a0a', '#ffe28a');
+const gMarigold    = makeGrad('gMarigold', 212, 248, '#7a0c1f', '#ff9a3c');
+const gMarigoldY   = makeGrad('gMarigoldY', 212, 248, '#c1470c', '#ffdb8a');
+const gOuterPetal  = makeGrad('gOuterPetal', 382, 395, '#c1272d', '#ffcf4d');
+
+// ---- glowing centre: halo + sunburst + layered core ----
+const halo = el('circle', {r:78, fill: makeRadial('coreHalo', '#ffb35c', '#ffb35c'), class:'center-glow', filter:'url(#softBlur)'});
+root.appendChild(halo);
+
+const sunburst = el('g', {class:'center-core'});
+for(let k=0;k<10;k++){
+  const a = (360/10)*k;
+  const spike = el('g', {transform:`rotate(${a})`});
+  const bloom = el('g', {class:'petal-bloom', style:`animation-delay:0s`});
+  bloom.appendChild(el('path', {d: starPetal(10, 40, 6), fill: k%2===0 ? '#ffcf4d' : '#c1272d'}));
+  spike.appendChild(bloom);
+  sunburst.appendChild(spike);
+}
+root.appendChild(sunburst);
+
+const core = el('g', {class:'center-core'});
+core.appendChild(el('circle', {r:30, fill:'#fff3d6'}));
+core.appendChild(el('circle', {r:21, fill:'#ffcf4d'}));
+core.appendChild(el('circle', {r:12, fill:'#c1272d', stroke:'#7a0c1f', 'stroke-width':1.5}));
+core.appendChild(el('circle', {r:4.5, fill:'#fff6de'}));
+root.appendChild(core);
+
+// ---- tiny petals ring (cream/yellow) ----
+buildRing({ innerR:44, outerR:66, count:12, width:8, fills:[gTinyPetal, warmC], cw:true, dur:30, pathFn:vesicaPetal });
+
+// ---- larger red/orange petals (rosette) ----
+buildRing({ innerR:70, outerR:118, count:12, width:19, fills:[gRosette, gRosetteOrg], cw:false, dur:38, pathFn:roundPetal, offset:15 });
+
+root.appendChild(el('circle', {r:120, fill:'none', stroke:'#ffd16688', 'stroke-width':1.5}));
+
+// ---- tiny flower ring, filled with mini star clusters in the gaps ----
+buildFlowerRing({
+  radius:124, count:16, petals:6, petalLen:20, petalWidth:8, colors:[gDaisy, warmA], centerColor:warmB,
+  cw:true, dur:44, shapeFn:roundPetal,
+  filler:{ radius:118, petals:5, petalLen:11, petalNear:1.5, petalWidth:3.6, colors:[warmB], centerColor:warmD, shapeFn:starPetal }
+});
+
+// ---- geometric ring: checkerboard diamond band ----
+buildCheckerBand({ innerR:150, outerR:206, angDiv:28, radBands:3, palette:[warmA, warmB, warmC, warmD], cw:false, dur:80, step:0.005 });
+
+root.appendChild(el('circle', {r:208, fill:'none', stroke:'#ffd16688', 'stroke-width':1.5}));
+
+// ---- marigold cluster ring (middle: orange -> red -> yellow), with small filler blooms between ----
+buildFlowerRing({
+  radius:212, count:13, petals:9, petalLen:36, petalWidth:15, colors:[gMarigold, warmB, gMarigoldY], centerColor:'#7a0c1f',
+  cw:true, dur:52, rot:8, shapeFn:roundPetal,
+  filler:{ radius:206, petals:5, petalLen:14, petalNear:2, petalWidth:5, colors:[warmC, warmD], centerColor:warmB, shapeFn:vesicaPetal }
+});
+
+// ---- thin leaf separator (green begins here) ----
+buildRing({ innerR:252, outerR:268, count:44, width:9, fills:gLeafIn, cw:false, dur:75, pathFn:leafPath });
+
+// ---- sunray ring (outer: yellow) ----
+buildRing({ innerR:272, outerR:316, count:22, width:24, fills:[warmC, warmA, warmD], cw:true, dur:55, pathFn:trianglePath, offset:8 });
+
+root.appendChild(el('circle', {r:318, fill:'none', stroke:'#ffd16688', 'stroke-width':1.5}));
+
+// ---- scroll ring: small flowers (outer: orange/red) with sparkle fillers ----
+buildFlowerRing({
+  radius:322, count:24, petals:5, petalLen:18, petalWidth:7, colors:[warmA, warmB], centerColor:warmC,
+  cw:false, dur:64, shapeFn:vesicaPetal,
+  filler:{ radius:322, petals:0, colors:[warmC] } // handled specially below (dots)
+});
+
+// swap the ring's filler flowers (0 petals is invalid) for simple sparkle dots instead:
+// (built directly here for clarity)
+(function scrollSparkles(){
+  const spin = el('g', {class:'ring-spin cw', style:'--dur:64s'});
+  const count = 24;
+  for(let i=0;i<count;i++){
+    const angle = (360/count)*i + (360/count)/2;
+    const rad = angle*Math.PI/180;
+    const r = 316;
+    const x = Math.sin(rad)*r, y = -Math.cos(rad)*r;
+    const bloom = el('g', {class:'petal-bloom', style:`animation-delay:${delay}s`});
+    delay += 0.008;
+    bloom.appendChild(el('circle', {cx:x, cy:y, r:3.4, fill:warmC}));
+    spin.appendChild(bloom);
+  }
+  shadowLayer.appendChild(spin);
+})();
+
+// ---- outer dense green leaf border ----
+buildRing({ innerR:340, outerR:378, count:58, width:12, fills:gLeafOut, cw:true, dur:90, pathFn:leafPath });
+
+// ---- outer petite flower ring (yellow/orange/red) ----
+buildFlowerRing({ radius:382, count:30, petals:6, petalLe
