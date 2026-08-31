@@ -70,45 +70,47 @@ Share your forked repository link with the organizers by **August 31, 2026**!
 **Once you fork this repository, replace this entire README.md with the following format:**
 
 ```markdown
-# 🌸 [Your Name]'s Pookalam 2026 🌸
+# 🌸 Ganga's Pookalam 2026 🌸
 
 ## 👨‍💻 About Me
-- **Name:** [Your Full Name]
-- **Branch:** [Your Branch]
-- **Semester:** [Your Semester]
-- **Contact Number:** [Your Contact Number]
-- **Programming Language Used:** [Language]
+- **Name:** Ganga S
+- **Branch:** B.Tech CSE 2
+- **Semester:** !st
+- **Contact Number:** 8129644479
+- **Programming Language Used:** HTML/CSS/JAVASCRIPT
 
-## 🎨 My Pookalam
+# 🎨 My Pookalam
 
-### Description
-[Write a brief description of your Pookalam design, inspiration, or the approach you took]
+## Description
 
-### Preview
+A virtual pookalam created using HTML, CSS, Canvas, and JavaScript, with a little help from ChatGPT. The design is inspired by traditional Kerala pookalams and uses different layers of flowers, colors, and patterns to create the design digitally.
+
+## Preview
+
 ![My Pookalam](output/pookalam-preview.png)
-*Add more images if you have multiple views or animations*
 
-### Features
-- [Feature 1 - e.g., "Colorful geometric patterns"]
-- [Feature 2 - e.g., "Interactive elements"]
+## Features
+
+- 🌼 10-layer circular pookalam design
+- 🎨 Colorful flower patterns and rings
+- 🟢 Perfect circular layout
+- 💻 Created using HTML, CSS, Canvas, and JavaScript
+- 📱 Responsive design that adapts to different screen sizes
 
 ## 🚀 How to Run
 
 ### Prerequisites
-[List any requirements, libraries, or software needed]
-```bash
-# Example for Python
-pip install matplotlib turtle numpy
-```
+
+No additional libraries or installations are required.
+
+You only need:
+
+- A web browser
+- VS Code or any text editor
 
 ### Running the Code
-```bash
-# Add your specific run commands here
-python pookalam.py
-# or
-open index.html
-# or your specific instructions
-```
+
+Open `pookalam.html` in your browser.
 
 ## 📁 File Structure
 ```
